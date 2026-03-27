@@ -1,26 +1,29 @@
-#
-# Copyright (C) 2021-2022 by TheAloneteam@Github, < https://github.com/TheAloneTeam >.
-#
-# This file is part of < https://github.com/TheAloneTeam/AloneMusic > project,
-# and is released under the "GNU v3.0 License Agreement".
-# Please see < https://github.com/TheAloneTeam/AloneMusic/blob/master/LICENSE >
-#
-# All rights reserved.
-
 from typing import Union
-
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+
+# ✅ Safe import (IMPORTANT FIX)
+try:
+    from pyrogram.enums import ButtonStyle
+except ImportError:
+    ButtonStyle = None
 
 from AloneMusic import app
 
 
 def help_pannel(_, START: Union[bool, int] = None):
-    first = [InlineKeyboardButton(text=_["CLOSE_BUTTON"], callback_data="close")]
+    first = [
+        InlineKeyboardButton(
+            text=_["CLOSE_BUTTON"],
+            callback_data="close",
+            style=ButtonStyle.DANGER if ButtonStyle else None
+        )
+    ]
 
     second = [
         InlineKeyboardButton(
             text=_["BACK_BUTTON"],
-            callback_data="settingsback_helper",  # ✅ spelling fix bhi
+            callback_data="settingsback_helper",  # ✅ fixed typo
+            style=ButtonStyle.DANGER if ButtonStyle else None
         ),
     ]
 
@@ -29,30 +32,66 @@ def help_pannel(_, START: Union[bool, int] = None):
     upl = InlineKeyboardMarkup(
         [
             [
-                InlineKeyboardButton(_["H_B_1"], callback_data="help_callback hb1"),
-                InlineKeyboardButton(_["H_B_2"], callback_data="help_callback hb2"),
-                InlineKeyboardButton(_["H_B_3"], callback_data="help_callback hb3"),
+                InlineKeyboardButton(
+                    _["H_B_1"], callback_data="help_callback:hb1",
+                    style=ButtonStyle.SUCCESS if ButtonStyle else None
+                ),
+                InlineKeyboardButton(
+                    _["H_B_2"], callback_data="help_callback:hb2",
+                    style=ButtonStyle.PRIMARY if ButtonStyle else None
+                ),
+                InlineKeyboardButton(
+                    _["H_B_3"], callback_data="help_callback:hb3",
+                    style=ButtonStyle.SUCCESS if ButtonStyle else None
+                ),
             ],
             [
-                InlineKeyboardButton(_["H_B_4"], callback_data="help_callback hb4"),
-                InlineKeyboardButton(_["H_B_5"], callback_data="help_callback hb5"),
-                InlineKeyboardButton(_["H_B_6"], callback_data="help_callback hb6"),
+                InlineKeyboardButton(
+                    _["H_B_4"], callback_data="help_callback:hb4",
+                    style=ButtonStyle.PRIMARY if ButtonStyle else None
+                ),
+                InlineKeyboardButton(
+                    _["H_B_5"], callback_data="help_callback:hb5",
+                    style=ButtonStyle.SUCCESS if ButtonStyle else None
+                ),
+                InlineKeyboardButton(
+                    _["H_B_6"], callback_data="help_callback:hb6",
+                    style=ButtonStyle.PRIMARY if ButtonStyle else None
+                ),
             ],
             [
-                InlineKeyboardButton(_["H_B_7"], callback_data="help_callback hb7"),
-                InlineKeyboardButton(_["H_B_8"], callback_data="help_callback hb8"),
-                InlineKeyboardButton(_["H_B_9"], callback_data="help_callback hb9"),
+                InlineKeyboardButton(
+                    _["H_B_7"], callback_data="help_callback:hb7",
+                    style=ButtonStyle.SUCCESS if ButtonStyle else None
+                ),
+                InlineKeyboardButton(
+                    _["H_B_8"], callback_data="help_callback:hb8",
+                    style=ButtonStyle.PRIMARY if ButtonStyle else None
+                ),
+                InlineKeyboardButton(
+                    _["H_B_9"], callback_data="help_callback:hb9",
+                    style=ButtonStyle.SUCCESS if ButtonStyle else None
+                ),
             ],
-            # 🔥 NEW ROW (hb10–hb12)
             [
-                InlineKeyboardButton("Tᴀɢᴀʟʟ", callback_data="help_callback hb10"),
-                InlineKeyboardButton("Wɪsʜ ᴛᴀɢ", callback_data="help_callback hb11"),
-                InlineKeyboardButton("Vᴄ ʟᴏɢs", callback_data="help_callback hb12"),
+                InlineKeyboardButton(
+                    "Tᴀɢᴀʟʟ", callback_data="help_callback:hb10",
+                    style=ButtonStyle.PRIMARY if ButtonStyle else None
+                ),
+                InlineKeyboardButton(
+                    "Wɪsʜ ᴛᴀɢ", callback_data="help_callback:hb11",
+                    style=ButtonStyle.SUCCESS if ButtonStyle else None
+                ),
+                InlineKeyboardButton(
+                    "Vᴄ ʟᴏɢs", callback_data="help_callback:hb12",
+                    style=ButtonStyle.PRIMARY if ButtonStyle else None
+                ),
             ],
             mark,
         ]
     )
     return upl
+
 
 def help_back_markup(_):
     upl = InlineKeyboardMarkup(
