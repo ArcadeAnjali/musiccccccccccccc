@@ -67,7 +67,9 @@ async def help_com_group(client, message: Message, _):
 @languageCB
 async def helper_cb(client, CallbackQuery, _):
     callback_data = CallbackQuery.data.strip()
-    cb = callback_data.split(None, 1)[1]
+    parts = callback_data.split(None, 1)
+    cb = parts[1] if len(parts) > 1 else parts[0]  # safe handling
+
     keyboard = help_back_markup(_)
 
     if cb == "hb1":
