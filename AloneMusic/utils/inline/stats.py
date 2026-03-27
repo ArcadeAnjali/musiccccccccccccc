@@ -1,13 +1,10 @@
-#
-# Copyright (C) 2021-2022 by TheAloneteam@Github, < https://github.com/TheAloneTeam >.
-#
-# This file is part of < https://github.com/TheAloneTeam/AloneMusic > project,
-# and is released under the "GNU v3.0 License Agreement".
-# Please see < https://github.com/TheAloneTeam/AloneMusic/blob/master/LICENSE >
-#
-# All rights reserved.
-
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+
+# ✅ Safe ButtonStyle import
+try:
+    from pyrogram.enums import ButtonStyle
+except ImportError:
+    ButtonStyle = None
 
 
 def stats_buttons(_, status):
@@ -15,18 +12,23 @@ def stats_buttons(_, status):
         InlineKeyboardButton(
             text=_["SA_B_1"],
             callback_data="TopOverall",
+            style=ButtonStyle.PRIMARY if ButtonStyle else None
         )
     ]
+
     sudo = [
         InlineKeyboardButton(
             text=_["SA_B_2"],
             callback_data="bot_stats_sudo",
+            style=ButtonStyle.SUCCESS if ButtonStyle else None
         ),
         InlineKeyboardButton(
             text=_["SA_B_3"],
             callback_data="TopOverall",
+            style=ButtonStyle.PRIMARY if ButtonStyle else None
         ),
     ]
+
     upl = InlineKeyboardMarkup(
         [
             sudo if status else not_sudo,
@@ -34,6 +36,7 @@ def stats_buttons(_, status):
                 InlineKeyboardButton(
                     text=_["CLOSE_BUTTON"],
                     callback_data="close",
+                    style=ButtonStyle.DANGER if ButtonStyle else None
                 ),
             ],
         ]
@@ -48,10 +51,12 @@ def back_stats_buttons(_):
                 InlineKeyboardButton(
                     text=_["BACK_BUTTON"],
                     callback_data="stats_back",
+                    style=ButtonStyle.PRIMARY if ButtonStyle else None
                 ),
                 InlineKeyboardButton(
                     text=_["CLOSE_BUTTON"],
                     callback_data="close",
+                    style=ButtonStyle.DANGER if ButtonStyle else None
                 ),
             ],
         ]
