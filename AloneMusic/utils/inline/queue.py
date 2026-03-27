@@ -1,15 +1,11 @@
-#
-# Copyright (C) 2021-2022 by TheAloneteam@Github, < https://github.com/TheAloneTeam >.
-#
-# This file is part of < https://github.com/TheAloneTeam/AloneMusic > project,
-# and is released under the "GNU v3.0 License Agreement".
-# Please see < https://github.com/TheAloneTeam/AloneMusic/blob/master/LICENSE >
-#
-# All rights reserved.
-
 from typing import Union
-
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+
+# ✅ Safe ButtonStyle import
+try:
+    from pyrogram.enums import ButtonStyle
+except ImportError:
+    ButtonStyle = None
 
 
 def queue_markup(
@@ -25,32 +21,39 @@ def queue_markup(
             InlineKeyboardButton(
                 text=_["QU_B_1"],
                 callback_data=f"GetQueued {CPLAY}|{videoid}",
+                style=ButtonStyle.PRIMARY if ButtonStyle else None
             ),
             InlineKeyboardButton(
                 text=_["CLOSE_BUTTON"],
                 callback_data="close",
+                style=ButtonStyle.DANGER if ButtonStyle else None
             ),
         ]
     ]
-    dur = [
+
+    dur_buttons = [
         [
             InlineKeyboardButton(
                 text=_["QU_B_2"].format(played, dur),
                 callback_data="GetTimer",
+                style=ButtonStyle.SUCCESS if ButtonStyle else None
             )
         ],
         [
             InlineKeyboardButton(
                 text=_["QU_B_1"],
                 callback_data=f"GetQueued {CPLAY}|{videoid}",
+                style=ButtonStyle.PRIMARY if ButtonStyle else None
             ),
             InlineKeyboardButton(
                 text=_["CLOSE_BUTTON"],
                 callback_data="close",
+                style=ButtonStyle.DANGER if ButtonStyle else None
             ),
         ],
     ]
-    upl = InlineKeyboardMarkup(not_dur if DURATION == "Unknown" else dur)
+
+    upl = InlineKeyboardMarkup(not_dur if DURATION == "Unknown" else dur_buttons)
     return upl
 
 
@@ -61,10 +64,12 @@ def queue_back_markup(_, CPLAY):
                 InlineKeyboardButton(
                     text=_["BACK_BUTTON"],
                     callback_data=f"queue_back_timer {CPLAY}",
+                    style=ButtonStyle.PRIMARY if ButtonStyle else None
                 ),
                 InlineKeyboardButton(
                     text=_["CLOSE_BUTTON"],
                     callback_data="close",
+                    style=ButtonStyle.DANGER if ButtonStyle else None
                 ),
             ]
         ]
@@ -73,7 +78,15 @@ def queue_back_markup(_, CPLAY):
 
 
 def aq_markup(_, chat_id):
-    buttons = [
-        [InlineKeyboardButton(text="ᴄʟᴏsᴇ", callback_data="close")],
-    ]
+    buttons = InlineKeyboardMarkup(
+        [
+            [
+                InlineKeyboardButton(
+                    text="ᴄʟᴏsᴇ",
+                    callback_data="close",
+                    style=ButtonStyle.DANGER if ButtonStyle else None
+                )
+            ],
+        ]
+    )
     return buttons
