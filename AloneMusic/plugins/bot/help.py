@@ -1,14 +1,12 @@
 #
-# Copyright (C) 2021-2022 by TheAloneteam@Github, < https://github.com/TheAloneTeam >.
+# Copyright (C) 2021-2022 by TheAloneteam@Github, < https://github.com/TheAloneTeam >
 #
 # This file is part of < https://github.com/TheAloneTeam/AloneMusic > project,
 # and is released under the "GNU v3.0 License Agreement".
-# Please see < https://github.com/TheAloneTeam/AloneMusic/blob/master/LICENSE >
 #
 # All rights reserved.
 
 from typing import Union
-
 from pyrogram import filters, types
 from pyrogram.types import InlineKeyboardMarkup, Message
 
@@ -67,29 +65,25 @@ async def help_com_group(client, message: Message, _):
 @languageCB
 async def helper_cb(client, CallbackQuery, _):
     callback_data = CallbackQuery.data.strip()
+
+    # ✅ Safe split to avoid IndexError
     parts = callback_data.split(None, 1)
-    cb = parts[1] if len(parts) > 1 else parts[0]  # safe handling
+    cb = parts[1] if len(parts) > 1 else parts[0].replace("help_callback", "")
 
     keyboard = help_back_markup(_)
 
     if cb == "hb1":
         await CallbackQuery.edit_message_text(helpers.HELP_1, reply_markup=keyboard)
-
     elif cb == "hb2":
         await CallbackQuery.edit_message_text(helpers.HELP_2, reply_markup=keyboard)
-
     elif cb == "hb3":
         await CallbackQuery.edit_message_text(helpers.HELP_3, reply_markup=keyboard)
-
     elif cb == "hb4":
         await CallbackQuery.edit_message_text(helpers.HELP_4, reply_markup=keyboard)
-
     elif cb == "hb5":
         await CallbackQuery.edit_message_text(helpers.HELP_5, reply_markup=keyboard)
-
     elif cb == "hb6":
         await CallbackQuery.edit_message_text(helpers.HELP_6, reply_markup=keyboard)
-
     elif cb == "hb7":
         if CallbackQuery.from_user.id not in SUDOERS:
             await CallbackQuery.answer(
@@ -97,18 +91,13 @@ async def helper_cb(client, CallbackQuery, _):
             )
             return
         await CallbackQuery.edit_message_text(helpers.HELP_7, reply_markup=keyboard)
-
     elif cb == "hb8":
         await CallbackQuery.edit_message_text(helpers.HELP_8, reply_markup=keyboard)
-
     elif cb == "hb9":
         await CallbackQuery.edit_message_text(helpers.HELP_9, reply_markup=keyboard)
-
     elif cb == "hb10":
         await CallbackQuery.edit_message_text(helpers.HELP_10, reply_markup=keyboard)
-
     elif cb == "hb11":
         await CallbackQuery.edit_message_text(helpers.HELP_11, reply_markup=keyboard)
-
     elif cb == "hb12":
         await CallbackQuery.edit_message_text(helpers.HELP_12, reply_markup=keyboard)
