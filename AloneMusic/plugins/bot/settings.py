@@ -82,6 +82,15 @@ async def show_bot_info(c: app, q: CallbackQuery):
     return
 
 
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+
+# ✅ Safe ButtonStyle import
+try:
+    from pyrogram.enums import ButtonStyle
+except ImportError:
+    ButtonStyle = None
+
+
 @app.on_callback_query(filters.regex("shiv_aarumi") & ~BANNED_USERS)
 @languageCB
 async def support(client, CallbackQuery, _):
@@ -90,21 +99,34 @@ async def support(client, CallbackQuery, _):
         reply_markup=InlineKeyboardMarkup(
             [
                 [
-                    InlineKeyboardButton(text="𝐃єᴠєʟᴏᴘєʀ 🎀", user_id=config.OWNER_ID),
-                ],
-                [
-                    InlineKeyboardButton(text="sᴜᴘᴘᴏʀᴛ 🪷", url=config.SUPPORT_CHAT),
-                    InlineKeyboardButton(text="𝐂ʜᴀɴɴᴇʟ 🌺", url=config.SUPPORT_CHANNEL),
+                    InlineKeyboardButton(
+                        text="𝐃єᴠєʟᴏᴘєʀ 🎀",
+                        user_id=config.OWNER_ID,
+                        style=ButtonStyle.SUCCESS if ButtonStyle else None
+                    ),
                 ],
                 [
                     InlineKeyboardButton(
-                        text="𝐆ᴏ 𝐁ᴀᴄᴋ", callback_data="settingsback_helper"
+                        text="sᴜᴘᴘᴏʀᴛ 🪷",
+                        url=config.SUPPORT_CHAT,
+                        style=ButtonStyle.PRIMARY if ButtonStyle else None
+                    ),
+                    InlineKeyboardButton(
+                        text="𝐂ʜᴀɴɴᴇʟ 🌺",
+                        url=config.SUPPORT_CHANNEL,
+                        style=ButtonStyle.PRIMARY if ButtonStyle else None
+                    ),
+                ],
+                [
+                    InlineKeyboardButton(
+                        text="𝐆ᴏ 𝐁ᴀᴄᴋ",
+                        callback_data="settingsback_helper",
+                        style=ButtonStyle.DANGER if ButtonStyle else None
                     )
                 ],
             ]
         ),
     )
-
 
 @app.on_callback_query(filters.regex("settingsback_helper") & ~BANNED_USERS)
 @languageCB
