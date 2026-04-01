@@ -1,12 +1,3 @@
-#
-# Copyright (C) 2021-2022 by TheAloneteam@Github, < https://github.com/TheAloneTeam >.
-#
-# This file is part of < https://github.com/TheAloneTeam/AloneMusic > project,
-# and is released under the "GNU v3.0 License Agreement".
-# Please see < https://github.com/TheAloneTeam/AloneMusic/blob/master/LICENSE >
-#
-# All rights reserved.
-
 import asyncio
 from typing import Union
 
@@ -27,11 +18,26 @@ async def put_queue(
     stream,
     forceplay: Union[bool, str] = None,
 ):
-    title = title.title()
+    # 🔥 SAFE VALUES
+    title = str(title) if title else "Unknown Song"
+    user = str(user) if user else "Unknown User"
+    duration = str(duration) if duration else "0:00"
+    vidid = str(vidid) if vidid else "unknown"
+
+    # 🔥 FIX title crash
+    try:
+        title = title.title()
+    except Exception as e:
+        print("❌ title error:", e)
+        title = "Unknown Song"
+
+    # 🔥 FIX duration crash
     try:
         duration_in_seconds = time_to_seconds(duration) - 3
-    except:
+    except Exception as e:
+        print("❌ duration error:", e)
         duration_in_seconds = 0
+
     put = {
         "title": title,
         "dur": duration,
@@ -44,6 +50,11 @@ async def put_queue(
         "seconds": duration_in_seconds,
         "played": 0,
     }
+
+    # 🔥 FIX db crash
+    if chat_id not in db:
+        db[chat_id] = []
+
     if forceplay:
         check = db.get(chat_id)
         if check:
@@ -53,7 +64,13 @@ async def put_queue(
             db[chat_id].append(put)
     else:
         db[chat_id].append(put)
-    autoclean.append(file)
+
+    # 🔥 FIX autoclean crash
+    try:
+        if file:
+            autoclean.append(file)
+    except Exception as e:
+        print("❌ autoclean error:", e)
 
 
 async def put_queue_index(
@@ -67,17 +84,24 @@ async def put_queue_index(
     stream,
     forceplay: Union[bool, str] = None,
 ):
+    # 🔥 SAFE VALUES
+    title = str(title) if title else "Unknown Stream"
+    user = str(user) if user else "Unknown User"
+    vidid = str(vidid) if vidid else "unknown"
+
     if "20.212.146.162" in vidid:
         try:
             dur = await asyncio.get_event_loop().run_in_executor(
                 None, check_duration, vidid
             )
             duration = seconds_to_min(dur)
-        except:
+        except Exception as e:
+            print("❌ duration fetch error:", e)
             duration = "ᴜʀʟ sᴛʀᴇᴀᴍ"
             dur = 0
     else:
         dur = 0
+
     put = {
         "title": title,
         "dur": duration,
@@ -89,6 +113,11 @@ async def put_queue_index(
         "seconds": dur,
         "played": 0,
     }
+
+    # 🔥 FIX db crash
+    if chat_id not in db:
+        db[chat_id] = []
+
     if forceplay:
         check = db.get(chat_id)
         if check:
